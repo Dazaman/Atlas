@@ -19,30 +19,35 @@ def load_atlas_info():
 
 def update_frontpage():
     atlas_info = load_atlas_info()
-    text = '<html><body>'
-    text += '<p><h1>BGH Atlas prototype</h1></p>'
-    text += '<p><h2>MODELS</h2></p>'
+    text = []
+    text.append('---')
+    text.append('layout: default')
+    text.append('---')
+    text.append('<body>')
+    text.append('<p><h1>BGH Atlas prototype</h1></p>')
+
+    text.append('<p><h2>MODELS</h2></p>')
     for htmlpage, page_info in sorted(atlas_info.items()):
 #         modelname, ext = os.path.splitext(os.path.basename(htmlpage))
-        text += '<p>'
-        text += '<a href="'
-        text += htmlpage
-        text += '">'
-        text += page_info['name']
-        text += '</a>'
-        text += '</p>'
-    text += '<p><h3>Contribute to the Atlas</h3></p>'
-    text += '<p>'
-    text += '<ol>'
-    text += '<li><a href="https://github.com/rsbyrne/demonstration">Clone the repository</a></li>'
-    text += '<li>Go to the "pages" directory and make a copy of the "example" folder</li>'
-    text += '<li>Open up the Jupyter notebook and follow the instructions (make sure to run the code at the bottom when you are finished!)</li>'
-    text += '<li>Push your changes back up to the repository</li>'
-    text += '</ol>'
-    text += '</p>'
-    text += '</body></html>'
+        text.append('<p>')
+        text.append('<a href="')
+        text.append(htmlpage)
+        text.append('">')
+        text.append(page_info['name'])
+        text.append('</a>')
+        text.append('</p>')
+    text.append('<p><h3>Contribute to the Atlas</h3></p>')
+    text.append('<p>')
+    text.append('<ol>')
+    text.append('<li><a href="https://github.com/rsbyrne/demonstration">Clone the repository</a></li>')
+    text.append('<li>Go to the "pages" directory and make a copy of the "example" folder</li>')
+    text.append('<li>Open up the Jupyter notebook and follow the instructions (make sure to run the code at the bottom when you are finished!)</li>')
+    text.append('<li>Push your changes back up to the repository</li>')
+    text.append('</ol>')
+    text.append('</p>')
+    text.append('</body>')
     with open(atlas_index_filename, 'w') as file:
-        file.write(text)
+        file.write('\n'.join(text))
 
 def bind_page(page_info):
 
