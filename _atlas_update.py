@@ -60,7 +60,7 @@ def update_frontpage():
             else:
                 image_url = 'https://www.earthbyte.org/wp-content/uploads/2015/08/EByteglobe.jpg'
             text.append('<tr>')
-            text.append('<td style="text-align: left"><img src="%s"></td>'%(image_url))
+            text.append('<td style="text-align: left"><img src="%s" height="75" width="90"></td>'%(image_url))
             text.append('<td style="text-align: left"><a href="%s"> %s </a></td>'%(atlas_info[url]['url'],atlas_info[url]['name']))
             text.append('<td style="text-align: left">%s </td>'%(atlas_info[url]['contributor']))
             
