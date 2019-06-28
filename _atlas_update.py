@@ -25,17 +25,50 @@ def update_frontpage():
     text.append('---')
     text.append('<body>')
     text.append('<p><h1>BGH Atlas prototype</h1></p>')
+    
+    categories = {}
+    
+    for url in atlas_info.keys():
+        cat = atlas_info[url]['category']
+        if cat in categories.keys():
+            categories[cat].append(url)
+        else:
+            categories[cat] = [url] 
 
-    text.append('<p><h2>MODELS</h2></p>')
-    for htmlpage, page_info in sorted(atlas_info.items()):
-#         modelname, ext = os.path.splitext(os.path.basename(htmlpage))
-        text.append('<p>')
-        text.append('<a href="')
-        text.append(htmlpage)
-        text.append('">')
-        text.append(page_info['name'])
-        text.append('</a>')
-        text.append('</p>')
+    categories = dict(sorted(categories.items()))
+    for k,v in categories.items():
+        categories[k] = sorted(v)
+
+    for cat in categories.keys():
+        text.append('<p><h2> %s Models </h2></p>' %(cat.capitalize()))
+        text.append('<table>')
+        text.append('<thead>')
+        text.append('<tr>')
+        text.append('<th style="text-align: left">%s</th>'%('  '))
+        text.append('<th style="text-align: left">%s</th>'%('Model Name'))
+        text.append('<th style="text-align: left">%s</th>'%('Contributor Name '))
+        text.append('<tr>')
+        text.append('</thead>')
+        text.append('<tbody>')
+        for url in categories[cat]:
+            
+            # img_url = '<img src="https://github.githubassets.com/images/icons/emoji/octocat.png" alt="Octocat">'
+            page_dirname = os.path.split(os.getcwd())[-1]
+            
+            if atlas_info[url]['image'] != "":
+                image_url = os.path.join(atlas_pages_url, page_dirname, atlas_info[url]['image'])
+            else:
+                image_url = 'https://www.earthbyte.org/wp-content/uploads/2015/08/EByteglobe.jpg'
+            text.append('<tr>')
+            text.append('<td style="text-align: left"><img src="%s"></td>'%(image_url))
+            text.append('<td style="text-align: left"><a href="%s"> %s </a></td>'%(atlas_info[url]['url'],atlas_info[url]['name']))
+            text.append('<td style="text-align: left">%s </td>'%(atlas_info[url]['contributor']))
+            
+            text.append('</tr>')
+
+        text.append('</tbody>')
+        text.append('</table>')
+
     text.append('<p><h3>Contribute to the Atlas</h3></p>')
     text.append('<p>')
     text.append('<ol>')
@@ -65,6 +98,7 @@ def bind_page(page_info):
             'underworld': page_info['underworld'],
             'badlands': page_info['badlands'],
             'gplate': page_info['gplates'],
+            'other': page_info['other']
             },
         'contributor': page_info['contributor_name'],
         'category': page_info['category'],
