@@ -51,12 +51,13 @@ def update_frontpage():
         text.append('</thead>')
         text.append('<tbody>')
         for url in categories[cat]:
-            
+            print ('url is ', url)
             # img_url = '<img src="https://github.githubassets.com/images/icons/emoji/octocat.png" alt="Octocat">'
-            page_dirname = os.path.split(os.getcwd())[-1]
-            
+            # page_dirname = os.path.split(os.getcwd())[-1]
+            # print ('page_dirname',page_dirname)
             if atlas_info[url]['image'] != "":
-                image_url = os.path.join(atlas_pages_url, page_dirname, atlas_info[url]['image'])
+                image_url = "%s%s" %(atlas_info[url]['url'],atlas_info[url]['image'])
+                print('image_url',image_url)
             else:
                 image_url = 'https://www.earthbyte.org/wp-content/uploads/2015/08/EByteglobe.jpg'
             text.append('<tr>')
