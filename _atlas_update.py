@@ -56,12 +56,12 @@ def update_frontpage():
             #a = ' '.join(v for v in direc)
             #print(a)
             direc = direc.encode('utf8')
-            print(direc)
+            # print(direc)
             if atlas_info[url]['image'] != "":
-                print (direc)
+                # print (direc)
                 image_url = direc[3:-3] +'/'+ atlas_info[url]['image']
                 # image_url = ''.join(image_url)
-                print('image_url',image_url)
+                # print 'image_url',image_url
             else:
                 image_url = 'https://www.earthbyte.org/wp-content/uploads/2015/08/EByteglobe.jpg'
             text.append('<tr>')
