@@ -24,7 +24,7 @@ def update_frontpage():
     text.append('layout: default')
     text.append('---')
     text.append('<body>')
-    text.append('<p><h1>BGH Atlas prototype</h1></p>')
+    text.append('<p><h1>BGH Atlas</h1></p>')
     
     categories = {}
     
@@ -41,6 +41,7 @@ def update_frontpage():
 
     for cat in categories.keys():
         text.append('<p><h2> %s Models </h2></p>' %(cat.capitalize()))
+        text.append('<p><h2> %s Models </h2></p>' %(cat.capitalize()))
         text.append('<table>')
         text.append('<thead>')
         text.append('<tr>')
@@ -52,16 +53,10 @@ def update_frontpage():
         text.append('<tbody>')
         for url in categories[cat]:
             direc = str(os.path.split(atlas_info[url]['url'])[:-1])
-            #direc = atlas_info[url]['url'].split('/')[:-1]
-            #a = ' '.join(v for v in direc)
-            #print(a)
             direc = direc.encode('utf8')
-            # print(direc)
+            
             if atlas_info[url]['image'] != "":
-                # print (direc)
                 image_url = direc[3:-3] +'/'+ atlas_info[url]['image']
-                # image_url = ''.join(image_url)
-                # print 'image_url',image_url
             else:
                 image_url = 'https://www.earthbyte.org/wp-content/uploads/2015/08/EByteglobe.jpg'
             text.append('<tr>')
@@ -117,6 +112,27 @@ def bind_page(page_info):
     # Add page info to atlas info:
     atlas_info = load_atlas_info()
     atlas_info[page_url] = page_dict
+    
+    # print 'length before del', len(atlas_info)
+    
+    for key, value in atlas_info.items():
+
+        # print '\nkey  ', key
+        directory = os.path.join(*(key.split('/')[-3:-1]))
+        file = os.path.join(*(key.split('/')[-3:]))
+        local_dir_path = os.path.join(hostdir,directory)
+        local_file_path = os.path.join(hostdir,file)
+        
+        # print 'Check dir exists ', os.path.isdir(local_dir_path)
+        # print 'Check file exists' ,os.path.exists(local_file_path)
+
+        if os.path.exists(local_file_path) and os.path.isdir(local_dir_path):
+            pass
+        else:
+            atlas_info.pop(key, None)
+
+    # print 'length after del',len(atlas_info)
+    
     with open(atlas_info_filename, 'w') as file:
         json.dump(atlas_info, file)
 
