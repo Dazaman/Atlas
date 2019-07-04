@@ -1,5 +1,6 @@
 import os
 import json
+import collections
 
 hostdir = os.path.abspath(os.path.dirname(__file__))
 atlas_info_filename = os.path.join(hostdir, "_atlas_info.json")
@@ -26,48 +27,92 @@ def update_frontpage():
     text.append('<body>')
     text.append('<p><h1>BGH Atlas</h1></p>')
     
-    categories = {}
+    cat_list = ['Underworld','Badlands','Coupled','PyGplates','Gplates & Citcoms','Other']
+    uw_list = ['Extension','Compression','Strike-slip']
+    bd_list = ['Basin','Rift','Strike-slip','Fluvio-Deltaic','Great Barrier Reef']
+    cp_list = []
+    pg_list = []
+    gc_list = []
+
+    categories = {c:dict() for c in cat_list}
     
+    # print categories
+
     for url in atlas_info.keys():
         cat = atlas_info[url]['category']
-        if cat in categories.keys():
-            categories[cat].append(url)
-        else:
-            categories[cat] = [url] 
-
-    categories = dict(sorted(categories.items()))
-    for k,v in categories.items():
-        categories[k] = sorted(v)
-
-    for cat in categories.keys():
-        text.append('<p><h2> %s Models </h2></p>' %(cat.capitalize()))
-        text.append('<p><h2> %s Models </h2></p>' %(cat.capitalize()))
-        text.append('<table>')
-        text.append('<thead>')
-        text.append('<tr>')
-        text.append('<th style="text-align: left">%s</th>'%('  '))
-        text.append('<th style="text-align: left">%s</th>'%('Model Name'))
-        text.append('<th style="text-align: left">%s</th>'%('Contributor Name '))
-        text.append('<tr>')
-        text.append('</thead>')
-        text.append('<tbody>')
-        for url in categories[cat]:
-            direc = str(os.path.split(atlas_info[url]['url'])[:-1])
-            direc = direc.encode('utf8')
-            
-            if atlas_info[url]['image'] != "":
-                image_url = direc[3:-3] +'/'+ atlas_info[url]['image']
+        if cat in uw_list:
+            if cat in categories['Underworld'].keys():
+                categories['Underworld'][cat].append(url)
             else:
-                image_url = 'https://www.earthbyte.org/wp-content/uploads/2015/08/EByteglobe.jpg'
-            text.append('<tr>')
-            text.append('<td style="text-align: left"><img src="%s" height="75" width="90"></td>'%(image_url))
-            text.append('<td style="text-align: left"><a href="%s"> %s </a></td>'%(atlas_info[url]['url'],atlas_info[url]['name']))
-            text.append('<td style="text-align: left">%s </td>'%(atlas_info[url]['contributor']))
-            
-            text.append('</tr>')
+                categories['Underworld'][cat] = [url] 
 
-        text.append('</tbody>')
-        text.append('</table>')
+        elif cat in bd_list:
+            if cat in categories['Badlands'].keys():
+                categories['Badlands'][cat].append(url)
+            else:
+                categories['Badlands'][cat] = [url] 
+
+        elif cat in uw_list:
+            if cat in categories['Coupled'].keys():
+                categories['Coupled'][cat].append(url)
+            else:
+                categories['Coupled'][cat] = [url] 
+
+        elif cat in uw_list:
+            if cat in categories['PyGplates'].keys():
+                categories['PyGplates'][cat].append(url)
+            else:
+                categories['PyGplates'][cat] = [url] 
+
+        else:
+            if cat in categories['Other'].keys():
+                categories['Other'][cat].append(url)
+            else:
+                categories['Other'][cat] = [url] 
+
+    # print 'categories[Badlands][Basin]',type(categories['Badlands']['Basin'])
+
+    # categories = collections.OrderedDict(sorted(categories.items()))
+    for k,v in categories.items():
+        for k1,v1 in categories[k].items():
+            categories[k][k1] = sorted(v1)
+    
+    for cat in categories.keys():
+        text.append('<p><h2> %s </h2></p>' %(cat.capitalize()))
+        text.append('<p><h2>  </h2></p>')
+        
+        # print 'cat', cat
+        for sub_cat in categories[cat]:
+            # print 'sub_cat', sub_cat   
+            text.append('<p><h3> %s Models </h3></p>' %(sub_cat.capitalize()))
+            text.append('<p><h3>  </h3></p>')
+            text.append('<table>')
+            text.append('<thead>')
+            text.append('<tr>')
+            text.append('<th style="text-align: left">%s</th>'%('  '))
+            text.append('<th style="text-align: left">%s</th>'%('Model Name'))
+            text.append('<th style="text-align: left">%s</th>'%('Contributor Name '))
+            text.append('<tr>')
+            text.append('</thead>')
+            text.append('<tbody>')
+            
+            for url in categories[str(cat)][str(sub_cat)]:
+                direc = str(os.path.split(atlas_info[url]['url'])[:-1])
+                direc = direc.encode('utf8')
+                
+                if atlas_info[url]['image'] != "":
+                    image_url = direc[3:-3] +'/'+ atlas_info[url]['image']
+                else:
+                    image_url = 'https://www.earthbyte.org/wp-content/uploads/2015/08/EByteglobe.jpg'
+                text.append('<tr>')
+                text.append('<td style="text-align: left"><img src="%s" height="75" width="90"></td>'%(image_url))
+                text.append('<td style="text-align: left"><a href="%s"> %s </a></td>'%(atlas_info[url]['url'],atlas_info[url]['name']))
+                text.append('<td style="text-align: left">%s </td>'%(atlas_info[url]['contributor']))
+                
+                text.append('</tr>')
+
+            text.append('</tbody>')
+            text.append('</table>')
 
     text.append('<p><h3>Contribute to the Atlas</h3></p>')
     text.append('<p>')
