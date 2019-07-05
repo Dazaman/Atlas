@@ -118,7 +118,7 @@ def update_frontpage():
                 text.append('<tr>')
                 text.append('<td style="text-align: left"><img src="%s" height="75" width="90"></td>'%(image_url))
                 text.append('<td style="text-align: left"><a href="%s"> %s </a></td>'%(atlas_info[url]['url'],atlas_info[url]['name']))
-                print atlas_info[url]['contributor']
+                # print atlas_info[url]['contributor']
                 text.append('<td style="text-align: left">%s </td>'%(atlas_info[url]['contributor']))
                 
                 text.append('</tr>')
@@ -141,7 +141,7 @@ def update_frontpage():
 
 def bind_page(page_info):
     
-    print('contributor_name', page_info['contributor_name'])
+    # print('contributor_name', page_info['contributor_name'])
 
     # Create html:
     command = 'jupyter nbconvert --to html ' + 'page.ipynb'
