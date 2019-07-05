@@ -27,12 +27,12 @@ def update_frontpage():
     text.append('<body>')
     text.append('<p><h1>BGH Atlas</h1></p>')
     
-    cat_list = ['Underworld','Badlands','Coupled','PyGplates','Gplates & Citcoms','Other']
+    cat_list = ['Underworld','Badlands','Coupled','PyGplates','Gplates & Citcoms','Uncategorised']
     uw_list = ['Extension','Compression','Strike-slip']
-    bd_list = ['Basin','Rift','Strike-slip','Fluvio-Deltaic','Great Barrier Reef']
-    cp_list = []
-    pg_list = []
-    gc_list = []
+    bd_list = ['Basin','Rift','Strike-slip','Fluvio-deltaic','Case-studies']
+    cp_list = ['Coupled']
+    pg_list = ['PyGplates']
+    gc_list = ['Gplates & Citcoms']
 
     categories = {c:dict() for c in cat_list}
     
@@ -65,10 +65,10 @@ def update_frontpage():
                 categories['PyGplates'][cat] = [url] 
 
         else:
-            if cat in categories['Other'].keys():
-                categories['Other'][cat].append(url)
+            if cat in categories['Uncategorised'].keys():
+                categories['Uncategorised'][cat].append(url)
             else:
-                categories['Other'][cat] = [url] 
+                categories['Uncategorised'][cat] = [url] 
 
     # print 'categories[Badlands][Basin]',type(categories['Badlands']['Basin'])
 
@@ -83,9 +83,9 @@ def update_frontpage():
         
         # print 'cat', cat
         for sub_cat in categories[cat]:
-            # print 'sub_cat', sub_cat   
-            text.append('<p><h3> %s Models </h3></p>' %(sub_cat.capitalize()))
-            text.append('<p><h3>  </h3></p>')
+            # print 'sub_cat', sub_cat 
+            text.append('<p><h3> %s Models </h3>' %(sub_cat.capitalize()))
+            text.append('<h3>  </h3>')
             text.append('<table>')
             text.append('<thead>')
             text.append('<tr>')
@@ -103,16 +103,28 @@ def update_frontpage():
                 if atlas_info[url]['image'] != "":
                     image_url = direc[3:-3] +'/'+ atlas_info[url]['image']
                 else:
-                    image_url = 'https://www.earthbyte.org/wp-content/uploads/2015/08/EByteglobe.jpg'
+                    if cat == 'Underworld':
+                        image_url = 'https://www.earthbyte.org/wp-content/uploads/2017/09/underworld.png'
+                    elif cat == 'Badlands':
+                        image_url = 'https://www.earthbyte.org/wp-content/uploads/2015/08/a5a5fb2e-3f32-11e5-9a1c-407c3a6d327a.png'
+                    elif cat == 'Coupled':
+                        image_url = 'https://www.earthbyte.org/wp-content/uploads/2015/08/bgh_image.jpg'
+                    elif cat == 'PyGplates':
+                        image_url = 'https://www.earthbyte.org/wp-content/uploads/2019/05/image001.png'
+                    elif cat == 'Gplates & Citcoms':
+                        image_url = 'https://www.earthbyte.org/wp-content/uploads/2018/10/GPlates_CitcomS_EBA-01.png'
+                    else:
+                        image_url = 'https://www.earthbyte.org/wp-content/uploads/2015/08/EByteglobe.jpg'
                 text.append('<tr>')
                 text.append('<td style="text-align: left"><img src="%s" height="75" width="90"></td>'%(image_url))
                 text.append('<td style="text-align: left"><a href="%s"> %s </a></td>'%(atlas_info[url]['url'],atlas_info[url]['name']))
+                print atlas_info[url]['contributor']
                 text.append('<td style="text-align: left">%s </td>'%(atlas_info[url]['contributor']))
                 
                 text.append('</tr>')
 
             text.append('</tbody>')
-            text.append('</table>')
+            text.append('</table></p>')
 
     text.append('<p><h3>Contribute to the Atlas</h3></p>')
     text.append('<p>')
@@ -128,6 +140,8 @@ def update_frontpage():
         file.write('\n'.join(text))
 
 def bind_page(page_info):
+    
+    print('contributor_name', page_info['contributor_name'])
 
     # Create html:
     command = 'jupyter nbconvert --to html ' + 'page.ipynb'
@@ -139,43 +153,35 @@ def bind_page(page_info):
     
     # Save page info:
     page_dict = {
-        'tools': {
-            'underworld': page_info['underworld'],
-            'badlands': page_info['badlands'],
-            'gplate': page_info['gplates'],
-            'other': page_info['other']
-            },
+        # 'tools': {
+        #     'underworld': page_info['underworld'],
+        #     'badlands': page_info['badlands'],
+        #     'gplate': page_info['gplates'],
+        #     'Uncategorised': page_info['Uncategorised']
+        #     },
         'contributor': page_info['contributor_name'],
         'category': page_info['category'],
         'name': page_info['model_name'],
         'url': page_url,
         'image': page_info['image'],
         }
-#     with open('_page_info.json', 'w') as file:
-#         json.dump(page_dict, file)
 
     # Add page info to atlas info:
     atlas_info = load_atlas_info()
     atlas_info[page_url] = page_dict
-    
     # print 'length before del', len(atlas_info)
-    
     for key, value in atlas_info.items():
-
         # print '\nkey  ', key
         directory = os.path.join(*(key.split('/')[-3:-1]))
         file = os.path.join(*(key.split('/')[-3:]))
         local_dir_path = os.path.join(hostdir,directory)
         local_file_path = os.path.join(hostdir,file)
-        
         # print 'Check dir exists ', os.path.isdir(local_dir_path)
         # print 'Check file exists' ,os.path.exists(local_file_path)
-
         if os.path.exists(local_file_path) and os.path.isdir(local_dir_path):
             pass
         else:
             atlas_info.pop(key, None)
-
     # print 'length after del',len(atlas_info)
     
     with open(atlas_info_filename, 'w') as file:
