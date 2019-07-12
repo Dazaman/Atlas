@@ -1,1 +1,1 @@
-u = "sample_compression_two"
+u = "sample_bl-strike-slip"

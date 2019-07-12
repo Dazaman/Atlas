@@ -1,7 +1,12 @@
+./pages/sample_uw-strike-slip/page.ipynb
+./pages/example/page.ipynb
 ./pages/sample_pygplates/page.ipynb
 ./pages/sample_coupled/page.ipynb
+./pages/sample_fluvio-deltaic/page.ipynb
+./pages/sample_case-studies/page.ipynb
+./pages/sample_rift/page.ipynb
 ./pages/sample_basin/page.ipynb
 ./pages/sample_gplates-citcoms/page.ipynb
 ./pages/sample_compression/page.ipynb
 ./pages/sample_extension/page.ipynb
-./pages/sample_compression_two/page.ipynb
+./pages/sample_bl-strike-slip/page.ipynb

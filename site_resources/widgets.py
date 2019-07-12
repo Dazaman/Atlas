@@ -58,3 +58,12 @@ display(w)
 display(badlands)
 display(underworld)
 display(pygplates)
+
+# For config.yml description
+  # <br><br>The Atlas is a top-level visual summary of end-member numerical models that the BGH is created.
+  # <br><br>
+  # <p><a href="https://github.com/rsbyrne/demonstration"><h2><b>Contribute to the Atlas</b></h2></a></p>
+  # <p>1. Clone the repository</p>
+  # <p>2. Go to the "pages" directory and make a copy of the "example" folder</p>
+  # <p>3. Open up the Jupyter notebook and follow the instructions (make sure to run the code at the bottom when you are finished!)</p>
+  # <p>4. Push your changes back up to the repository.</p>

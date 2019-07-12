@@ -11872,10 +11872,8 @@ Time to make your new BGH Atlas page!
 <span class="c1"># Other options are:</span>
 <span class="c1"># - Coupled</span>
 <span class="c1"># - PyGplates</span>
-<span class="c1"># - Gplates &amp; Citcoms</span>
+<span class="c1"># - Gplates-Citcoms</span>
 <span class="c1"># - Uncategorized</span>
-<span class="c1"># Alternatively, specify a real-world setting,</span>
-<span class="c1"># e.g. &quot;Great Barrier Reef&quot;</span>
 
 <span class="n">category</span> <span class="o">=</span> <span class="s2">&quot;Basin&quot;</span>
 
@@ -12059,8 +12057,39 @@ Time to make your new BGH Atlas page!
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Running from Individual notebook https://basin-genesis-hub.github.io/Atlas/pages/sample_basin/page.html
+<pre>Running from Individual notebook
+Underworld
 </pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">KeyError</span>                                  Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-3-173e7d59aef9&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">     14</span>     u <span class="ansi-blue-fg">=</span> None
+<span class="ansi-green-intense-fg ansi-bold">     15</span> 
+<span class="ansi-green-fg">---&gt; 16</span><span class="ansi-red-fg"> </span>_atlas_update<span class="ansi-blue-fg">.</span>bind_page<span class="ansi-blue-fg">(</span>locals<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> u<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">/home/danial/Atlas/_atlas_update.py</span> in <span class="ansi-cyan-fg">bind_page</span><span class="ansi-blue-fg">(page_info, u)</span>
+<span class="ansi-green-intense-fg ansi-bold">    217</span> 
+<span class="ansi-green-intense-fg ansi-bold">    218</span>     <span class="ansi-red-fg"># Create a new front page:</span>
+<span class="ansi-green-fg">--&gt; 219</span><span class="ansi-red-fg">     </span>update_frontpage<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">/home/danial/Atlas/_atlas_update.py</span> in <span class="ansi-cyan-fg">update_frontpage</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">    124</span>             text<span class="ansi-blue-fg">.</span>append<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;&lt;tbody&gt;&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    125</span> 
+<span class="ansi-green-fg">--&gt; 126</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">for</span> url <span class="ansi-green-fg">in</span> categories<span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">(</span>cat<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">[</span>str<span class="ansi-blue-fg">(</span>sub_cat<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    127</span>                 direc <span class="ansi-blue-fg">=</span> str<span class="ansi-blue-fg">(</span>os<span class="ansi-blue-fg">.</span>path<span class="ansi-blue-fg">.</span>split<span class="ansi-blue-fg">(</span>atlas_info<span class="ansi-blue-fg">[</span>url<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;url&#39;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">-</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    128</span>                 direc <span class="ansi-blue-fg">=</span> direc<span class="ansi-blue-fg">.</span>encode<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;utf8&#39;</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">KeyError</span>: &#39;Badlands-Strike-slip&#39;</pre>
 </div>
 </div>
 

@@ -1,1 +1,1 @@
-u = "sample_extension"
+u = "sample_bl-strike-slip"

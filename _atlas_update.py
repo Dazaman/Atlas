@@ -10,8 +10,9 @@ atlas_pages_dirname = 'pages'
 atlas_pages_url = os.path.join(atlas_url, atlas_pages_dirname)
 atlas_index_filename = os.path.join(hostdir, 'index.html')
 page_notebook_dir = True 
-header_path = os.path.join(os.path.abspath(os.path.join(os.path.split(os.getcwd())[0], os.pardir)),'site_resources','header.txt')
+# header_path = os.path.join(os.path.abspath(os.path.join(os.path.split(os.getcwd())[0], os.pardir)),'site_resources','header.txt')
 target_url = 'https://raw.githubusercontent.com/basin-genesis-hub/Atlas/master/site_resources/header.txt'
+
 def load_atlas_info():
     try:
         with open(atlas_info_filename, 'r') as file:
@@ -32,26 +33,23 @@ def update_frontpage():
     text.append('layout: default')
     text.append('---')
 
-    # with open('https://drive.google.com/file/d/1E9_z3YrBIwThA98yEPCevJFUSJwwj6Yd/view?usp=sharing','r') as f:
-    #     for row in f.readlines():
-    #         text.append(row)
     header_data = urllib2.urlopen(target_url) # it's a file like object and works just like a file
     for line in header_data: # files are iterable
         text.append(line)
 
     text.append('<body>')
-    text.append('<p><h1>BGH Atlas</h1></p>')
+    text.append('<p><h1>Basin Genesis Hub Atlas</h1></p>')
     
-    cat_list = ['Underworld','Badlands','Coupled','PyGplates','Gplates & Citcoms','Uncategorised']
-    uw_list = ['Extension','Compression','Strike-slip-tectonic']
-    bd_list = ['Basin','Rift','Strike-slip-depositional','Fluvio-deltaic','Case-studies']
-    cp_list = ['Coupled','Extension-coupled','Compression-coupled','Strike-slip-coupled']
-    pg_list = ['PyGplates']
-    gc_list = ['Gplates & Citcoms']
+    cat_list = ['Underworld','Badlands','Badlands Case Study','Underworld Badlands Coupled']#,'PyGplates','Gplates & Citcoms']
+    uw_list = ['Extension','Compression','Underworld-Strike-slip']
+    blc_list = ['Basin','Rift','Badlands-Strike-slip','Fluvio-deltaic']
+    blr_list = ['Case-studies']
+    cp_list = ['Extension-coupled','Compression-coupled', 'Strike-slip-coupled']
+    # pg_list = ['PyGplates']
+    # gc_list = ['Gplates & Citcoms']
 
     categories = {c:dict() for c in cat_list}
     # print categories
-
     for url in atlas_info.keys():
         cat = atlas_info[url]['category']
         if cat in uw_list:
@@ -60,46 +58,59 @@ def update_frontpage():
             else:
                 categories['Underworld'][cat] = [url] 
 
-        elif cat in bd_list:
+        elif cat in blc_list:
             if cat in categories['Badlands'].keys():
                 categories['Badlands'][cat].append(url)
             else:
                 categories['Badlands'][cat] = [url] 
 
-        elif cat in cp_list:
-            if cat in categories['Coupled'].keys():
-                categories['Coupled'][cat].append(url)
+        elif cat in blr_list:
+            if cat in categories['Badlands Case Study'].keys():
+                categories['Badlands Case Study'][cat].append(url)
             else:
-                categories['Coupled'][cat] = [url] 
+                categories['Badlands Case Study'][cat] = [url] 
 
-        elif cat in pg_list:
-            if cat in categories['PyGplates'].keys():
-                categories['PyGplates'][cat].append(url)
+        elif cat in cp_list:
+            if cat in categories['Underworld Badlands Coupled'].keys():
+                categories['Underworld Badlands Coupled'][cat].append(url)
             else:
-                categories['PyGplates'][cat] = [url] 
+                categories['Underworld Badlands Coupled'][cat] = [url] 
+
+        # elif cat in pg_list:
+        #     if cat in categories['PyGplates'].keys():
+        #         categories['PyGplates'][cat].append(url)
+        #     else:
+        #         categories['PyGplates'][cat] = [url] 
         
-        elif cat in gc_list:
-            if cat in categories['Gplates & Citcoms'].keys():
-                categories['Gplates & Citcoms'][cat].append(url)
-            else:
-                categories['Gplates & Citcoms'][cat] = [url] 
-        else:
-            if cat in categories['Uncategorised'].keys():
-                categories['Uncategorised'][cat].append(url)
-            else:
-                categories['Uncategorised'][cat] = [url] 
+        # elif cat in gc_list:
+        #     if cat in categories['Gplates & Citcoms'].keys():
+        #         categories['Gplates & Citcoms'][cat].append(url)
+        #     else:
+        #         categories['Gplates & Citcoms'][cat] = [url] 
+        # else:
+        #     if cat in categories['Uncategorised'].keys():
+        #         categories['Uncategorised'][cat].append(url)
+        #     else:
+        #         categories['Uncategorised'][cat] = [url] 
 
     # categories = collections.OrderedDict(sorted(categories.items()))
     for k,v in categories.items():
+        # print '\n k ', k
+        # print 'v ', v
         for k1,v1 in categories[k].items():
+            # print '\n k1 ', k1
+            # print 'v1 ', v1
             categories[k][k1] = sorted(v1)
     
-    for cat in categories.keys():
-        text.append('<p><h2> %s </h2></p>' %(cat.capitalize()))
+    # for cat in categories.keys():
+    for cat in cat_list:
+        text.append('<br>')
+        text.append('<p><h2> %s models</h2></p>' %(cat.capitalize()))
         text.append('<p><h2>  </h2></p>')
         for sub_cat in categories[cat]:
-            text.append('<p><h3> %s Models </h3>' %(sub_cat.capitalize()))
+            text.append('<h3> %s </h3>' %(sub_cat.capitalize()))
             text.append('<h3>  </h3>')
+            text.append('<div style="overflow-x:auto;">')
             text.append('<table>')
             text.append('<thead>')
             text.append('<tr>')
@@ -137,17 +148,18 @@ def update_frontpage():
                 text.append('</tr>')
 
             text.append('</tbody>')
-            text.append('</table></p>')
+            text.append('</table>')
+            text.append('</div>')
 
-    text.append('<p><h3>Contribute to the Atlas</h3></p>')
-    text.append('<p>')
-    text.append('<ol>')
-    text.append('<li><a href="https://github.com/basin-genesis-hub/Atlas">Clone the repository</a></li>')
-    text.append('<li>Go to the "pages" directory and make a copy of the "example" folder</li>')
-    text.append('<li>Open up the Jupyter notebook and follow the instructions (make sure to run the code at the bottom when you are finished!)</li>')
-    text.append('<li>Push your changes back up to the repository</li>')
-    text.append('</ol>')
-    text.append('</p>')
+    # text.append('<p><h3>Contribute to the Atlas</h3></p>')
+    # text.append('<p>')
+    # text.append('<ol>')
+    # text.append('<li><a href="https://github.com/basin-genesis-hub/Atlas">Clone the repository</a></li>')
+    # text.append('<li>Go to the "pages" directory and make a copy of the "example" folder</li>')
+    # text.append('<li>Open up the Jupyter notebook and follow the instructions (make sure to run the code at the bottom when you are finished!)</li>')
+    # text.append('<li>Push your changes back up to the repository</li>')
+    # text.append('</ol>')
+    # text.append('</p>')
     text.append('</body>')
     with open(atlas_index_filename, 'w') as file:
         file.write('\n'.join(text))
