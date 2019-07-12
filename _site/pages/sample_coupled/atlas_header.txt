@@ -1,0 +1,23 @@
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Basin Genesis Hub Atlas </title>
+<meta name="bgh-atlas" content="Jekyll v3.8.5" />
+<meta property="og:title" content="BGH Atlas" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Basin Genesis Hub Atlas. The Atlas is a top-level visual summary of end-member numerical models that the BGH is created." />
+<meta property="og:description" content="The Atlas is a top-level visual summary of end-member numerical models that the BGH is created." />
+<link rel="canonical" href="https://github.com/basin-genesis-hub/Atlas" />
+<meta property="og:url" content="https://basin-genesis-hub.github.io/Atlas/" />
+<meta property="og:site_name" content="BGH Atlas" />
+<script type="application/ld+json">
+{"@type":"WebSite","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://github.com/basin-genesis-hub/Atlas/blob/master/site_resources/BasinGensisHub.png"}},"url":"https://basin-genesis-hub.github.io/Atlas/","name":"BGH Atlas","description":"The Atlas is a top-level visual summary of end-member numerical models that the BGH is created.","headline":"BGH Atlas","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+  </head>
