@@ -49,7 +49,6 @@ def update_frontpage():
     # gc_list = ['Gplates & Citcoms']
 
     categories = {c:dict() for c in cat_list}
-    # print categories
     for url in atlas_info.keys():
         cat = atlas_info[url]['category']
         if cat in uw_list:
@@ -95,11 +94,7 @@ def update_frontpage():
 
     # categories = collections.OrderedDict(sorted(categories.items()))
     for k,v in categories.items():
-        # print '\n k ', k
-        # print 'v ', v
         for k1,v1 in categories[k].items():
-            # print '\n k1 ', k1
-            # print 'v1 ', v1
             categories[k][k1] = sorted(v1)
     
     # for cat in categories.keys():
