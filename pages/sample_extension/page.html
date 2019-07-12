@@ -11787,12 +11787,15 @@ Ignore this cell!
         float:left;
         width:50%;
     }
-</style># README
-# Time to make your new BGH Atlas page!
- - Double-click on each of the six 'markdown' cells below to replace the sample content with your own stuff.
+</style><!--
+README
+
+Time to make your new BGH Atlas page!
+ - Double-click on each of the 'markdown' cells below to replace the sample content with your own stuff.
  - Re-run the cell to make it render nicely (this is how your page will appear in the final product).
  - Be careful to make sure that adjacent cells are balanced in length.You can always chuck into extra blank lines like this:  <br>
  - When you're done, don't forget to run the code cell at the bottom  of this notebook to 'tie' your new page into the local copy of the Atlas.
+-->
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
@@ -11801,7 +11804,10 @@ Ignore this cell!
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">### RUN THIS CELL FIRST ###</span>
 <span class="c1"># It will make everything</span>
 <span class="c1"># look nice while you&#39;re editing.</span>
+<span class="o">%</span><span class="k">reload_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
 <span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="kn">as</span> <span class="nn">widgets</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
 <span class="n">HTML</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;&lt;style&gt;div.cell{float:left;width:50%;}&lt;/style&gt;&#39;&#39;&#39;</span><span class="p">)</span>
 </pre></div>
@@ -11832,29 +11838,42 @@ Ignore this cell!
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">### EDIT FOLLOWING LINES &amp; RUN CELL ###</span>
-
-<span class="c1"># Tell us who you are and give your model</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Tell us who you are and give your model</span>
 <span class="c1">#a name (between quotation marks)</span>
-<span class="n">contributor_name</span> <span class="o">=</span> <span class="s2">&quot;noauthor&quot;</span>
+<span class="n">contributor_name</span> <span class="o">=</span> <span class="s2">&quot;aman&quot;</span>
 <span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;Extension Sample&quot;</span>
+
+<span class="c1"># Specify the tools you used by answering </span>
+<span class="c1"># True or False (no quotation marks);</span>
+<span class="c1"># False is assumed by default:</span>
+<span class="n">underworld</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">badlands</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">gplates</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">pygplates</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">citcoms</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">gmt</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">other</span> <span class="o">=</span> <span class="bp">False</span>
 
 <span class="c1"># Provide a category for your model between</span>
 <span class="c1"># the quotation marks.</span>
-
 <span class="c1"># Options for tectonic models are:</span>
 <span class="c1"># - &quot;Extension&quot;</span>
 <span class="c1"># - &quot;Compression&quot;</span>
-<span class="c1"># - &quot;Strike-slip&quot;</span>
+<span class="c1"># - &quot;Strike-slip-tectonic&quot;</span>
 <span class="c1"># Options for depositional models are:</span>
 <span class="c1"># - &quot;Basin&quot;</span>
 <span class="c1"># - &quot;Rift&quot;</span>
-<span class="c1"># - &quot;Stirke-slip&quot;</span>
+<span class="c1"># - &quot;Stirke-slip-depositional&quot;</span>
 <span class="c1"># - &quot;Fluvio-deltaic&quot;</span>
 <span class="c1"># - &quot;Case-studies&quot;</span>
+<span class="c1"># Other options are:</span>
+<span class="c1"># - Coupled</span>
+<span class="c1"># - PyGplates</span>
+<span class="c1"># - Gplates &amp; Citcoms</span>
+<span class="c1"># - Uncategorized</span>
 <span class="c1"># Alternatively, specify a real-world setting,</span>
 <span class="c1"># e.g. &quot;Great Barrier Reef&quot;</span>
 
@@ -12017,7 +12036,13 @@ Ignore this cell!
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">))</span>
 <span class="kn">import</span> <span class="nn">_atlas_update</span>
-<span class="n">_atlas_update</span><span class="o">.</span><span class="n">bind_page</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">u</span>
+<span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="bp">None</span>
+
+<span class="n">_atlas_update</span><span class="o">.</span><span class="n">bind_page</span><span class="p">(</span><span class="nb">locals</span><span class="p">(),</span> <span class="n">u</span><span class="p">)</span>
 </pre></div>
 
 </div>

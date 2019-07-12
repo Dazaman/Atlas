@@ -18,24 +18,30 @@ def load_atlas_info():
         atlas_info = {}
     return atlas_info
 
+def save_atlas_info(atlas_info):
+    with open(atlas_info_filename, 'w') as file:
+        json.dump(atlas_info, file)
+
 def update_frontpage():
     atlas_info = load_atlas_info()
     text = []
     text.append('---')
     text.append('layout: default')
     text.append('---')
+
+    # with open('https://github.com/basin-genesis-hub/Atlas/tree/master/site_resources/header.txt','r') as f:
+        # text.append(f.readlines())
     text.append('<body>')
     text.append('<p><h1>BGH Atlas</h1></p>')
     
     cat_list = ['Underworld','Badlands','Coupled','PyGplates','Gplates & Citcoms','Uncategorised']
-    uw_list = ['Extension','Compression','Strike-slip']
-    bd_list = ['Basin','Rift','Strike-slip','Fluvio-deltaic','Case-studies']
-    cp_list = ['Coupled']
+    uw_list = ['Extension','Compression','Strike-slip-tectonic']
+    bd_list = ['Basin','Rift','Strike-slip-depositional','Fluvio-deltaic','Case-studies']
+    cp_list = ['Extension','Compression','Strike-slip-coupled']
     pg_list = ['PyGplates']
     gc_list = ['Gplates & Citcoms']
 
     categories = {c:dict() for c in cat_list}
-    
     # print categories
 
     for url in atlas_info.keys():
@@ -52,18 +58,23 @@ def update_frontpage():
             else:
                 categories['Badlands'][cat] = [url] 
 
-        elif cat in uw_list:
+        elif cat in cp_list:
             if cat in categories['Coupled'].keys():
                 categories['Coupled'][cat].append(url)
             else:
                 categories['Coupled'][cat] = [url] 
 
-        elif cat in uw_list:
+        elif cat in pg_list:
             if cat in categories['PyGplates'].keys():
                 categories['PyGplates'][cat].append(url)
             else:
                 categories['PyGplates'][cat] = [url] 
-
+        
+        elif cat in gc_list:
+            if cat in categories['Gplates & Citcoms'].keys():
+                categories['Gplates & Citcoms'][cat].append(url)
+            else:
+                categories['Gplates & Citcoms'][cat] = [url] 
         else:
             if cat in categories['Uncategorised'].keys():
                 categories['Uncategorised'][cat].append(url)
@@ -129,7 +140,7 @@ def update_frontpage():
     text.append('<p><h3>Contribute to the Atlas</h3></p>')
     text.append('<p>')
     text.append('<ol>')
-    text.append('<li><a href="https://github.com/rsbyrne/demonstration">Clone the repository</a></li>')
+    text.append('<li><a href="https://github.com/basin-genesis-hub/Atlas">Clone the repository</a></li>')
     text.append('<li>Go to the "pages" directory and make a copy of the "example" folder</li>')
     text.append('<li>Open up the Jupyter notebook and follow the instructions (make sure to run the code at the bottom when you are finished!)</li>')
     text.append('<li>Push your changes back up to the repository</li>')
@@ -139,26 +150,33 @@ def update_frontpage():
     with open(atlas_index_filename, 'w') as file:
         file.write('\n'.join(text))
 
-def bind_page(page_info):
-    
-    # print('contributor_name', page_info['contributor_name'])
-
+def bind_page(page_info,u=None):
+    # print('Page added')
     # Create html:
     command = 'jupyter nbconvert --to html ' + 'page.ipynb'
     os.system(command)
 
-    # Define page url:
-    page_dirname = os.path.split(os.getcwd())[-1]
-    page_url = os.path.join(atlas_pages_url, page_dirname, 'page.html')
-    
+    if u == None:
+        # Define page url:
+        page_dirname = os.path.split(os.getcwd())[-1]
+        page_url = os.path.join(atlas_pages_url, page_dirname, 'page.html')
+        # print 'page_dirname', page_dirname
+        print 'Running from Individual notebook', page_url
+    else:
+        page_url = os.path.join(atlas_pages_url, u, 'page.html')
+        print 'Running from Update notebook ', page_url
+
     # Save page info:
     page_dict = {
-        # 'tools': {
-        #     'underworld': page_info['underworld'],
-        #     'badlands': page_info['badlands'],
-        #     'gplate': page_info['gplates'],
-        #     'Uncategorised': page_info['Uncategorised']
-        #     },
+        'tools': {
+            'underworld': page_info['underworld'],
+            'badlands': page_info['badlands'],
+            'gplates': page_info['gplates'],
+            'pygplates': page_info['pygplates'],
+            'citcoms': page_info['citcoms'],
+            'gmt': page_info['gmt'],
+            'other': page_info['other'],
+            },
         'contributor': page_info['contributor_name'],
         'category': page_info['category'],
         'name': page_info['model_name'],
@@ -169,6 +187,7 @@ def bind_page(page_info):
     # Add page info to atlas info:
     atlas_info = load_atlas_info()
     atlas_info[page_url] = page_dict
+    
     # print 'length before del', len(atlas_info)
     for key, value in atlas_info.items():
         # print '\nkey  ', key
@@ -184,8 +203,7 @@ def bind_page(page_info):
             atlas_info.pop(key, None)
     # print 'length after del',len(atlas_info)
     
-    with open(atlas_info_filename, 'w') as file:
-        json.dump(atlas_info, file)
+    save_atlas_info(atlas_info)
 
     # Create a new front page:
     update_frontpage()
